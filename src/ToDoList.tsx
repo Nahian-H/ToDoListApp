@@ -1,71 +1,59 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { List, Typography, Paper } from '@mui/material';
+import InputProps from './Props';
+import ToDoItem from './ToDoListItem';
 
-function ToDoList() {
-    const [tasks, setTasks] = useState(["Sample task 1" , "Sample task 2", "Sample task 3", "Sample task 4", "Sample task 5"]);
-    const [newTask, setNewTask] = useState("");
-
-
-function handleInputChange(event: any) {
-    setNewTask(event.target.value);
+interface Task {
+  id: number;
+  text: string;
+  completed: boolean;
 }
 
-function addTask() {
-    setTasks(t => [...t, newTask])
-}
+const ToDoList: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
 
-function deleteTask(index:any) {
+  const addTask = (text: string) => {
+    if (text.trim()) {
+      setTasks((prev) => [
+        ...prev,
+        { id: Date.now(), text, completed: false },
+      ]);
+    }
+  };
 
-}
+  const toggleTask = (id: number) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
 
-function moveTaskUp(index:any) {
+  const deleteTask = (id: number) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
 
-}
-
-function moveTaskDown(index:any) {
-
-}
-
-return (
-<div className='to-do-list'>
-    <h1>To-Do-List App</h1>
-    <div>
-        <input
-            type="text"
-            placeholder='Enter a task...'
-            value={newTask}
-            onChange={handleInputChange}
-        />
-        <button
-        className='add-button'
-        onClick={addTask}>
-            Add
-        </button>
-    </div>
-    <ol>
-        {tasks.map((task, index) =>
-        <li key={index}>
-            <span className='text'>{task}</span>
-            <button
-                className="delete-button"
-                onClick={() => deleteTask(index)}>
-                Delete
-            </button>
-            <button
-            className='move-up-button'
-            onClick={() => moveTaskUp(index)}>
-            Move Up
-            </button>
-            <button
-            className='move-down-button'
-            onClick={() => moveTaskDown(index)}>
-            Move Up
-            </button>
-        </li>
-        )}
-    </ol>
-</div>
-);
-}
-
+  return (
+    <Paper elevation={3} sx={{ p: 2 }}>
+      <InputProps onAddTask={addTask} />
+      {tasks.length > 0 ? (
+        <List>
+          {tasks.map((task) => (
+            <ToDoItem
+              key={task.id}
+              task={task}
+              onToggle={toggleTask}
+              onDelete={deleteTask}
+            />
+          ))}
+        </List>
+      ) : (
+        <Typography align="center" sx={{ mt: 2 }}>
+          No tasks yet! Add one above.
+        </Typography>
+      )}
+    </Paper>
+  );
+};
 
 export default ToDoList;

@@ -1,12 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import ToDoList from './ToDoList'
+import React from 'react';
+import { CssBaseline, Container, Typography } from '@mui/material';
+import ToDoList from './ToDoList';
 
-function App() {
+const App: React.FC = () => {
+  return (
+    <>
+      <CssBaseline />
+      <Container maxWidth="sm" sx={{ mt: 4 }}>
+        <Typography variant="h4" component="h1" align="center" gutterBottom>
+          To-Do List
+        </Typography>
+        <ToDoList />
+      </Container>
+    </>
+  );
+};
 
-  return (<ToDoList />)
-}
-
-export default App
+export default App;
