@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 import {
   ListItem,
   ListItemText,
   Checkbox,
   IconButton,
   Typography,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Task {
   id: number;
@@ -29,7 +29,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({ task, onToggle, onDelete }) => {
         </IconButton>
       }
       sx={{
-        bgcolor: task.completed ? 'action.selected' : 'background.paper',
+        bgcolor: task.completed ? "action.selected" : "background.paper",
         mb: 1,
       }}
     >
@@ -43,14 +43,11 @@ const ToDoItem: React.FC<ToDoItemProps> = ({ task, onToggle, onDelete }) => {
           <Typography
             variant="body1"
             sx={{
-              textDecoration: task.completed ? 'line-through' : 'none',
+              textDecoration: task.completed ? "line-through" : "none",
             }}
           >
             {task.text}
           </Typography>
-
-
-          
         }
       />
     </ListItem>
