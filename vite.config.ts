@@ -14,7 +14,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: "./src/ToDoList.test.tsx",  // Correct path to the root
+    setupFiles: "setupTests.ts",  // Correct path to the root
   },
 });
 
