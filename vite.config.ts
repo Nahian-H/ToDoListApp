@@ -14,7 +14,10 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: "setupTests.ts",  // Correct path to the root
+    setupFiles: "setupTests.ts",
+    coverage: {
+      provider: 'istanbul',
+    },
   },
 });
 
