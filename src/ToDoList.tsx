@@ -3,21 +3,27 @@ import { List, Typography, Paper, Button } from "@mui/material";
 import InputProps from "./InputProps";
 import ToDoItem from "./ToDoListItem";
 
+// In your ToDoList.tsx or a shared types file
 interface Task {
   id: number;
   text: string;
   completed: boolean;
+  priority: 'Low' | 'Medium' | 'High';
 }
+
 
 const ToDoList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [showCompleted, setShowCompleted] = useState<boolean>(false);
 
-  const addTask = (text: string) => {
-    if (text.trim()) {
-      setTasks((prev) => [...prev, { id: Date.now(), text, completed: false }]);
-    }
-  };
+const addTask = (text: string, priority: 'Low' | 'Medium' | 'High') => {
+  if (text.trim()) {
+    setTasks((prev) => [
+      ...prev,
+      { id: Date.now(), text, completed: false, priority }
+    ]);
+  }
+};
 
   const toggleTask = (id: number) => {
     setTasks((prev) =>
@@ -31,6 +37,48 @@ const ToDoList: React.FC = () => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
+
+
+  const filteredTasks = showCompleted
+    ? tasks.filter((task) => task.completed) // Show only completed
+    : tasks.filter((task) => !task.completed); // Show only incomplete (default)
+
+  return (
+    <Paper elevation={3} sx={{ p: 2 }}>
+      <InputProps onAddTask={addTask} />
+
+      {/* Toggle Button */}
+      <Button
+        variant="contained"
+        color={showCompleted ? "success" : "primary"}
+        onClick={() => setShowCompleted((prev) => !prev)}
+        sx={{ mt: 2, mb: 2 }}
+      >
+        {showCompleted ? "Show Tasks Left" : "Show Completed Tasks"}
+      </Button>
+
+      {/* Task List */}
+      {filteredTasks.length > 0 ? (
+        <List>
+          {filteredTasks.map((task) => (
+            <ToDoItem
+              key={task.id}
+              task={task}
+              onToggle={toggleTask}
+              onDelete={deleteTask}
+            />
+          ))}
+        </List>
+      ) : (
+        <Typography align="center" sx={{ mt: 2 }}>
+          {showCompleted ? "No completed tasks yet!" : "No tasks left to do!"}
+        </Typography>
+      )}
+    </Paper>
+  );
+};
+
+export default ToDoList;
   // const completedTasks = tasks.filter((task) => task.completed);
   //   return (
   //     <Paper elevation={3} sx={{ p: 2 }}>
@@ -116,44 +164,3 @@ const ToDoList: React.FC = () => {
   //     </Paper>
   //   );
   // };
-
-  const filteredTasks = showCompleted
-    ? tasks.filter((task) => task.completed) // Show only completed
-    : tasks.filter((task) => !task.completed); // Show only incomplete (default)
-
-  return (
-    <Paper elevation={3} sx={{ p: 2 }}>
-      <InputProps onAddTask={addTask} />
-
-      {/* Toggle Button */}
-      <Button
-        variant="contained"
-        color={showCompleted ? "success" : "primary"}
-        onClick={() => setShowCompleted((prev) => !prev)}
-        sx={{ mt: 2, mb: 2 }}
-      >
-        {showCompleted ? "Show Tasks Left" : "Show Completed Tasks"}
-      </Button>
-
-      {/* Task List */}
-      {filteredTasks.length > 0 ? (
-        <List>
-          {filteredTasks.map((task) => (
-            <ToDoItem
-              key={task.id}
-              task={task}
-              onToggle={toggleTask}
-              onDelete={deleteTask}
-            />
-          ))}
-        </List>
-      ) : (
-        <Typography align="center" sx={{ mt: 2 }}>
-          {showCompleted ? "No completed tasks yet!" : "No tasks left to do!"}
-        </Typography>
-      )}
-    </Paper>
-  );
-};
-
-export default ToDoList;
