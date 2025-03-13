@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import React from 'react';
+// import { CssBaseline, Container, Typography } from '@mui/material';
+// import ToDoList from './ToDoList';
 
-function App() {
-  const [count, setCount] = useState(0)
+// const App: React.FC = () => {
+//   return (
+//     <>
+//       <CssBaseline />
+//       <Container maxWidth="sm" sx={{ mt: 4 }}>
+//         <Typography variant="h4" component="h1" align="center" gutterBottom>
+//           To-Do List
+//         </Typography>
+//         <ToDoList />
+//       </Container>
+//     </>
+//   );
+// };
+
+// export default App;
+// App.tsx
+import React, { useState } from 'react';
+import { CssBaseline, Container, Typography } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ToDoList from './ToDoList';
+import ThemeToggle from './ThemeToggle';
+
+const App: React.FC = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    },
+  });
+
+  const toggleTheme = () => {
+    setDarkMode((prev) => !prev);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ThemeToggle darkMode={darkMode} toggleTheme={toggleTheme} />
+      <Container maxWidth="sm" sx={{ mt: 4 }}>
+        <Typography variant="h4" component="h1" align="center" gutterBottom>
+          To-Do List
+        </Typography>
+        <ToDoList />
+      </Container>
+    </ThemeProvider>
+  );
+};
 
-export default App
+export default App;
