@@ -11,13 +11,13 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  base: "/ToDoListApp",
   test: {
     environment: "jsdom",
     globals: true,
     setupFiles: "setupTests.ts",
     coverage: {
-      provider: 'istanbul',
+      provider: "istanbul",
     },
   },
 });
-
